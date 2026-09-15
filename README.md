@@ -3,9 +3,9 @@
 Vibely is a full-stack social media web application developed as part of the CodeAlpha Full Stack Development Internship.
 It provides a simple and interactive platform where users can create profiles, connect with other users, share posts and stories, and interact through likes, comments, follows, and notifications.
 
-🚀 **Features**
+🚀 ##**Features**
 
-👤 **User Authentication**
+👤 ###**User Authentication**
 
 - User registration and login
 - Secure password authentication
