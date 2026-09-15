@@ -63,7 +63,7 @@ Users receive notifications for:
 - Responsive navigation
 - Clean and modern social-media-style UI
 
-🛠️ **Technologies Used**
+## 🛠️ **Technologies Used**
 
 - Python
 - Django
@@ -73,7 +73,7 @@ Users receive notifications for:
 - SQLite
 - Pillow
 
-📂 **Project Structure**
+## 📂 **Project Structure**
 
 Vibely/
 │
@@ -105,42 +105,42 @@ Vibely/
     ├── img/
     └── js/
 
-⚙️ **Installation and Setup**
+## ⚙️ **Installation and Setup**
 
-1. Clone the repository
+**1. Clone the repository**
 
 git clone <YOUR_GITHUB_REPOSITORY_URL>
 cd CodeAlpha_SocialMediaPlatform-Vibely
 
-2. Create a virtual environment
+**2. Create a virtual environment**
 
 python -m venv venv
 
-3. Activate the virtual environment
+**3. Activate the virtual environment**
 
 Windows PowerShell:
 
 .\venv\Scripts\Activate.ps1
 
-4. Install dependencies
+**4. Install dependencies**
 
 pip install -r requirements.txt
 
-5. Apply database migrations
+**5. Apply database migrations**
 
 python manage.py migrate
 
-6. Start the development server
+**6. Start the development server**
 
 python manage.py runserver
 
-7. Open Vibely
+**7. Open Vibely**
 
 Open the local server URL shown in the terminal, usually:
 
 http://127.0.0.1:8000/
 
-🔐 **Security**
+## 🔐 **Security**
 
 Sensitive files and local development files such as the following are excluded from the repository:
 
@@ -153,7 +153,7 @@ __pycache__/
 
 API keys, passwords, and other private credentials should never be committed to GitHub.
 
-🎯 **Internship Project**
+## 🎯 **Internship Project**
 
 **Internship:** CodeAlpha Full Stack Development Internship
 
@@ -163,7 +163,7 @@ API keys, passwords, and other private credentials should never be committed to 
 
 Vibely was developed to demonstrate full-stack web development concepts including user authentication, database management, social interactions, media uploads, responsive UI design, and dynamic web functionality.
 
-👩‍💻 **Developed By**
+## 👩‍💻 **Developed By**
 
 **Ranjani Pullati**
 
