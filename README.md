@@ -156,7 +156,9 @@ API keys, passwords, and other private credentials should never be committed to 
 🎯 **Internship Project**
 
 **Internship:** CodeAlpha Full Stack Development Internship
+
 **Project:** Social Media Platform
+
 **Application Name:** Vibely(An application where you share your vibe and connect with others.)
 
 Vibely was developed to demonstrate full-stack web development concepts including user authentication, database management, social interactions, media uploads, responsive UI design, and dynamic web functionality.
