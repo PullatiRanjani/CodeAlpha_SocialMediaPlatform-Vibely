@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Search · Vibely{% endblock %}
+{% block content %}
+<main class="search-page">
+  <section class="search-card">
+    <div class="search-page-title"><span class="eyebrow">Discover</span><h1>Find people on Vibely</h1><p>Search by name or username.</p></div>
+    <form class="search-large" action="{% url 'search' %}" method="get"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.8"></circle><path d="m16 16 5 5"></path></svg><input autofocus name="q" value="{{ q }}"><button>Search</button></form>
+  </section>
+  {% if q %}
+  <section class="search-results">
+    <div class="results-heading"><h2>People</h2><span>{{ users|length }} found</span></div>
+    {% for u in users %}<a class="search-user" href="{% url 'profile' u.username %}"><span class="search-avatar">{% if u.profile.avatar %}<img src="{{ u.profile.avatar.url }}" alt="">{% else %}{{ u.username|first|upper }}{% endif %}</span><span><strong>{{ u.profile.name|default:u.username }}</strong><small>@{{ u.username }}</small></span><span class="result-arrow">›</span></a>{% empty %}<div class="result-empty">No matching people found.</div>{% endfor %}
+    <div class="results-heading post-results-heading"><h2>Posts</h2></div>
+    {% for p in posts %}<a class="search-user" href="{% url 'post_detail' p.id %}"><span class="search-avatar">{% if p.author.profile.avatar %}<img src="{{ p.author.profile.avatar.url }}" alt="">{% else %}{{ p.author.username|first|upper }}{% endif %}</span><span><strong>{{ p.author.profile.name|default:p.author.username }}</strong><small>{{ p.caption|truncatechars:110 }}</small></span><span class="result-arrow">›</span></a>{% empty %}<div class="result-empty">No matching posts.</div>{% endfor %}
+  </section>
+  {% else %}<div class="search-empty"><div class="search-empty-icon">⌕</div><h2>Search Vibely</h2><p>Find a person and open their real profile to see their bio, posts, followers and following.</p></div>{% endif %}
+</main>
+{% endblock %}

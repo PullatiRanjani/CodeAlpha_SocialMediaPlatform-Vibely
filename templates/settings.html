@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Settings · Vibely{% endblock %}
+{% block content %}
+<main class="settings-page">
+  <section class="settings-card">
+    <div class="settings-heading"><span class="eyebrow">Account</span><h1>Edit profile</h1><p>Keep your Vibely profile up to date.</p></div>
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}{{ form.non_field_errors }}
+      {% for f in form %}<div class="settings-field {% if f.name == 'remove_avatar' %}remove-photo-field{% endif %}"><label>{{ f.label }}</label>{{ f }}{{ f.errors }}</div>{% endfor %}
+      <button class="primary-wide" type="submit">Save changes</button>
+    </form>
+    <div class="settings-divider"></div><a class="logout-button" href="{% url 'logout' %}">Log out</a>
+  </section>
+</main>
+{% endblock %}

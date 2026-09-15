@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block title %}Notifications · Vibely{% endblock %}
+{% block content %}
+<main class="notifications-page"><section class="notifications-card"><div class="settings-heading"><span class="eyebrow">Updates</span><h1>Notifications</h1><p>Likes, comments, follows and story activity.</p></div>{% for n in notifications %}<a class="notification-row" href="{% if n.post %}{% url 'post_detail' n.post.id %}{% elif n.story %}{% url 'story_viewer' n.story.author.username %}{% else %}{% url 'profile' n.actor.username %}{% endif %}"><span class="notification-avatar">{% if n.actor.profile.avatar %}<img src="{{ n.actor.profile.avatar.url }}" alt="">{% else %}{{ n.actor.username|first|upper }}{% endif %}</span><span><strong>{{ n.actor.profile.name|default:n.actor.username }}</strong> {{ n.get_kind_display }}{% if n.text %}: “{{ n.text|truncatechars:80 }}”{% endif %}<small>{{ n.created_at|timesince }} ago</small></span></a>{% empty %}<div class="result-empty">No notifications yet.</div>{% endfor %}</section></main>
+{% endblock %}

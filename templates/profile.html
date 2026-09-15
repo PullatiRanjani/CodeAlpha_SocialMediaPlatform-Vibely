@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}{{ profile.name }} · Vibely{% endblock %}
+{% block content %}
+<main class="profile-page">
+  <section class="profile-card">
+    <div class="profile-avatar-large">{% if profile.avatar %}<img src="{{ profile.avatar.url }}" alt="{{ profile_user.username }}">{% else %}<span>{{ profile_user.username|first|upper }}</span>{% endif %}</div>
+    <div class="profile-main-info">
+      <div class="profile-title-row"><div><h1>{{ profile.name|default:profile_user.username }}</h1><p>@{{ profile_user.username }}</p></div>{% if profile_user == user %}<a class="edit-profile" href="{% url 'settings' %}">Edit profile</a>{% else %}<form method="post" action="{% url 'toggle_follow' profile_user.username %}">{% csrf_token %}<button class="edit-profile follow-profile" type="submit">{% if is_following %}Following{% else %}Follow{% endif %}</button></form>{% endif %}</div>
+      <div class="profile-stats"><div><b>{{ posts.count }}</b><span>Posts</span></div><div><b>{{ follower_count }}</b><span>Followers</span></div><div><b>{{ following_count }}</b><span>Following</span></div></div>
+      {% if profile.bio %}<p class="profile-bio">{{ profile.bio|linebreaksbr }}</p>{% endif %}
+      {% if profile.website %}<a class="profile-link" href="{{ profile.website }}" target="_blank" rel="noopener">{{ profile.website }}</a>{% endif %}
+    </div>
+  </section>
+
+  <section class="profile-connections">
+    <div class="connection-column"><div class="connection-title">Followers <span>{{ follower_count }}</span></div>
+      {% for u in followers %}<div class="connection-user"><a class="connection-user-main" href="{% url 'profile' u.username %}"><span class="connection-avatar">{% if u.profile.avatar %}<img src="{{ u.profile.avatar.url }}" alt="">{% else %}{{ u.username|first|upper }}{% endif %}</span><span><strong>{{ u.profile.name|default:u.username }}</strong><small>@{{ u.username }}</small></span></a>{% if profile_user == user and u.id not in following_ids %}<form method="post" action="{% url 'toggle_follow' u.username %}">{% csrf_token %}<button class="mini-connect" type="submit">Follow back</button></form>{% endif %}</div>{% empty %}<p class="muted-empty">No followers yet.</p>{% endfor %}
+    </div>
+    <div class="connection-column"><div class="connection-title">Following <span>{{ following_count }}</span></div>
+      {% for u in following %}<div class="connection-user"><a class="connection-user-main" href="{% url 'profile' u.username %}"><span class="connection-avatar">{% if u.profile.avatar %}<img src="{{ u.profile.avatar.url }}" alt="">{% else %}{{ u.username|first|upper }}{% endif %}</span><span><strong>{{ u.profile.name|default:u.username }}</strong><small>@{{ u.username }}</small></span></a>{% if profile_user == user %}<form method="post" action="{% url 'toggle_follow' u.username %}">{% csrf_token %}<button class="mini-connect unfollow" type="submit">Unfollow</button></form>{% endif %}</div>{% empty %}<p class="muted-empty">Not following anyone yet.</p>{% endfor %}
+    </div>
+  </section>
+
+  <div class="profile-section-heading"><h2>Posts</h2><span>{{ posts.count }}</span></div>
+  {% if posts %}
+  <div class="profile-grid">{% for post in posts %}<a class="profile-grid-item" href="{% url 'post_detail' post.id %}">{% if post.image %}<img src="{{ post.image.url }}" alt="">{% elif post.video %}<video class="profile-grid-video" muted playsinline preload="metadata"><source src="{{ post.video.url }}"></video>{% else %}<div class="text-grid-post">{{ post.caption|truncatechars:160 }}</div>{% endif %}<span class="grid-overlay">♥ {{ post.likes.count }} · 💬 {{ post.comments.count }}</span></a>{% endfor %}</div>
+  {% else %}<div class="empty-feed profile-empty"><div class="empty-icon">✦</div><h3>No posts yet</h3><p>{% if profile_user == user %}Share your first moment on Vibely.{% else %}{{ profile.name|default:profile_user.username }} hasn't posted yet.{% endif %}</p></div>{% endif %}
+</main>
+{% endblock %}

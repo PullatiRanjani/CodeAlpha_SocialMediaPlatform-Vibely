@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block title %}Your Story · Vibely{% endblock %}
+{% block content %}
+<main class="create-page"><section class="create-card"><div class="create-heading"><span class="eyebrow">Your moment</span><h1>Share a story</h1><p>Upload one photo or video. It disappears automatically after 24 hours.</p></div><form method="post" enctype="multipart/form-data">{% csrf_token %}{{ form.non_field_errors }}<div class="upload-choice"><div class="settings-field"><label>Photo</label>{{ form.image }}{{ form.image.errors }}</div><div class="upload-or">or</div><div class="settings-field"><label>Video</label>{{ form.video }}{{ form.video.errors }}</div></div><div class="settings-field"><label>Caption</label>{{ form.caption }}</div><div class="create-actions"><a class="secondary-button" href="{% url 'home' %}">Cancel</a><button class="primary-wide" type="submit">Post story</button></div></form></section></main>
+{% endblock %}

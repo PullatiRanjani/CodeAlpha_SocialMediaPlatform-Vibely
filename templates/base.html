@@ -1,0 +1,89 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ACC8E5">
+  <title>{% block title %}Vibely{% endblock %}</title>
+  <link rel="icon" href="{% static 'img/vibely-mark.svg' %}">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+{% if user.is_authenticated and not user.is_staff and not user.is_superuser %}
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="{% url 'home' %}" aria-label="Vibely home">
+      <img src="{% static 'img/vibely-mark.svg' %}" alt="">
+      <span>Vibely</span>
+    </a>
+
+    <a class="top-search" href="{% url 'search' %}">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+    </a>
+
+    <div class="top-actions">
+      <a class="top-icon" href="{% url 'search' %}" aria-label="Search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+      </a>
+      <a class="top-icon notification-icon" href="{% url 'notifications' %}" aria-label="Notifications">
+        <svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>
+        {% if unread %}<span class="notification-dot">{{ unread }}</span>{% endif %}
+      </a>
+      <div class="profile-menu" id="profileMenu">
+        <button class="top-avatar" onclick="document.getElementById('profileMenu').classList.toggle('open')" aria-label="Open profile menu">
+          {% if user.profile.avatar %}<img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}">{% else %}<span>{{ user.username|first|upper }}</span>{% endif %}
+        </button>
+        <div class="profile-dropdown">
+          <div class="menu-user">
+            <div class="menu-avatar">{% if user.profile.avatar %}<img src="{{ user.profile.avatar.url }}" alt="">{% else %}{{ user.username|first|upper }}{% endif %}</div>
+            <div><strong>{{ user.profile.name }}</strong><span>@{{ user.username }}</span></div>
+          </div>
+          <a href="{% url 'profile' user.username %}"><span class="menu-svg">◉</span> Profile</a>
+          <a href="{% url 'settings' %}"><span class="menu-svg">⚙</span> Settings</a>
+          <a href="{% url 'logout' %}"><span class="menu-svg">↪</span> Log out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+{% endif %}
+
+{% if messages %}
+<div class="flash-wrap">
+  {% for message in messages %}<div class="flash-message">{{ message }}</div>{% endfor %}
+</div>
+{% endif %}
+
+{% block content %}{% endblock %}
+
+{% if user.is_authenticated and not user.is_staff and not user.is_superuser %}
+<nav class="bottom-nav" aria-label="Main navigation">
+  <a href="{% url 'home' %}" class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}" aria-label="Home">
+    <svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"></path></svg>
+  </a>
+  <a href="{% url 'search' %}" class="nav-item {% if request.resolver_match.url_name == 'search' %}active{% endif %}" aria-label="Search">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+  </a>
+  <a href="{% url 'create_post' %}" class="nav-create" aria-label="Create post">
+    <span><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></span>
+  </a>
+  <a href="{% url 'notifications' %}" class="nav-item notification-nav" aria-label="Notifications">
+    <svg viewBox="0 0 24 24"><path d="M20.8 8.8c0 5.2-8.8 10.1-8.8 10.1S3.2 14 3.2 8.8A4.8 4.8 0 0 1 12 6a4.8 4.8 0 0 1 8.8 2.8Z"></path></svg>
+    {% if unread %}<span class="nav-badge">{{ unread }}</span>{% endif %}
+  </a>
+  <a href="{% url 'profile' user.username %}" class="nav-item {% if request.resolver_match.url_name == 'profile' and request.resolver_match.kwargs.username == user.username %}active{% endif %}" aria-label="Profile">
+    {% if user.profile.avatar %}<img class="nav-profile-image" src="{{ user.profile.avatar.url }}" alt="{{ user.username }}">{% else %}<span class="nav-profile-fallback">{{ user.username|first|upper }}</span>{% endif %}
+  </a>
+</nav>
+{% endif %}
+
+<script>
+document.addEventListener('click', function(e) {
+  const menu = document.getElementById('profileMenu');
+  if (menu && !menu.contains(e.target)) menu.classList.remove('open');
+});
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

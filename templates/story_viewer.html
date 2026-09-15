@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}{{ owner.profile.name }}'s Story · Vibely{% endblock %}
+{% block content %}
+<main class="story-stage">
+  <div class="story-viewer-shell">
+    <div class="story-bars">{% for s in stories %}<span class="story-bar {% if forloop.first %}current{% endif %}" data-index="{{ forloop.counter0 }}"><i></i></span>{% endfor %}</div>
+    <div class="story-head-overlay">
+      <a class="story-head-user" href="{% url 'profile' owner.username %}"><span class="story-head-avatar">{% if owner.profile.avatar %}<img src="{{ owner.profile.avatar.url }}" alt="">{% else %}{{ owner.username|first|upper }}{% endif %}</span><span><strong>{{ owner.profile.name|default:owner.username }}</strong><small id="storyAge">{{ stories.0.created_at|timesince }} ago</small></span></a>
+      <a class="story-close" href="{% url 'home' %}" aria-label="Close story">×</a>
+    </div>
+
+    {% for s in stories %}
+    <div class="story-slide {% if forloop.first %}show{% endif %}" data-index="{{ forloop.counter0 }}" data-story-id="{{ s.id }}" data-age="{{ s.created_at|timesince }} ago">
+      {% if s.image %}<img class="story-media" src="{{ s.image.url }}" alt="Story">{% elif s.video %}<video class="story-media" src="{{ s.video.url }}" controls autoplay muted playsinline></video>{% endif %}
+      {% if s.caption %}<div class="story-caption-box">{{ s.caption }}</div>{% endif %}
+      {% if owner == user %}<form method="post" action="{% url 'delete_story' s.id %}" class="story-delete-form">{% csrf_token %}<button type="submit">Delete</button></form>{% endif %}
+      <div class="story-bottom-overlay">
+        {% if owner != user %}
+        <form method="post" action="{% url 'story_reply' s.id %}" class="story-reply-form">{% csrf_token %}<input name="text" placeholder="Reply to {{ owner.profile.name|default:owner.username }}…" required><button type="submit">Send</button></form>
+        <button type="button" class="story-like-btn {% if user in s.likes.all %}liked{% endif %}" data-url="{% url 'story_like' s.id %}" data-count="{{ s.likes.count }}">♥ <span>{{ s.likes.count }}</span></button>
+        {% else %}<a class="story-insights-btn" href="{% url 'story_insights' s.id %}">View insights</a>{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+    {% if stories|length > 1 %}<button class="story-nav story-prev" id="storyPrev">‹</button><button class="story-nav story-next" id="storyNext">›</button>{% endif %}
+  </div>
+</main>
+{% endblock %}
+{% block scripts %}
+<script>
+(function(){
+  const slides=[...document.querySelectorAll('.story-slide')];
+  const bars=[...document.querySelectorAll('.story-bar')];
+  const age=document.getElementById('storyAge');
+  let index=0;
+  function show(i){
+    if(!slides.length)return;
+    index=(i+slides.length)%slides.length;
+    slides.forEach((s,n)=>s.classList.toggle('show',n===index));
+    bars.forEach((b,n)=>b.classList.toggle('current',n===index));
+    age.textContent=slides[index].dataset.age;
+  }
+  document.getElementById('storyPrev')?.addEventListener('click',()=>show(index-1));
+  document.getElementById('storyNext')?.addEventListener('click',()=>show(index+1));
+  document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')show(index-1);if(e.key==='ArrowRight')show(index+1);if(e.key==='Escape')location.href="{% url 'home' %}";});
+  document.querySelectorAll('.story-like-btn').forEach(btn=>btn.addEventListener('click',async()=>{
+    const r=await fetch(btn.dataset.url,{method:'POST',headers:{'X-CSRFToken':'{{ csrf_token }}'}}); const d=await r.json();
+    if(d.count!==undefined){btn.querySelector('span').textContent=d.count;btn.classList.toggle('liked',d.liked);}
+  }));
+})();
+</script>
+{% endblock %}

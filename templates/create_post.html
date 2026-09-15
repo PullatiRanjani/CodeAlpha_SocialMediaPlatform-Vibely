@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block title %}Create post · Vibely{% endblock %}
+{% block content %}
+<main class="create-page">
+  <section class="create-card">
+    <div class="create-heading">
+      <span class="eyebrow">New moment</span>
+      <h1>Create a post</h1>
+      <p>Share a photo, video, or thought with your Vibely community.</p>
+    </div>
+
+    {% if form.non_field_errors %}
+      <div class="form-error">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" id="post-create-form">
+      {% csrf_token %}
+
+      <div class="settings-field">
+        <label for="{{ form.caption.id_for_label }}">Caption</label>
+        {{ form.caption }}
+        {{ form.caption.errors }}
+      </div>
+
+      <div class="upload-choice">
+        <label class="upload-card" for="id_image">
+          <span class="upload-icon">📷</span>
+          <strong>Photo</strong>
+          <small>JPG, PNG, WEBP</small>
+          {{ form.image }}
+        </label>
+        <span class="upload-or">OR</span>
+        <label class="upload-card" for="id_video">
+          <span class="upload-icon">🎥</span>
+          <strong>Video</strong>
+          <small>MP4, WEBM, MOV · max 50 MB</small>
+          {{ form.video }}
+        </label>
+      </div>
+
+      {{ form.image.errors }}
+      {{ form.video.errors }}
+
+      <div id="media-preview" class="media-preview" hidden></div>
+
+      <div class="create-actions">
+        <a class="secondary-button" href="{% url 'home' %}">Cancel</a>
+        <button class="primary-wide" type="submit">Publish post</button>
+      </div>
+    </form>
+  </section>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  const imageInput = document.getElementById('id_image');
+  const videoInput = document.getElementById('id_video');
+  const preview = document.getElementById('media-preview');
+
+  function clearPreview() {
+    preview.innerHTML = '';
+    preview.hidden = true;
+  }
+
+  function showPreview(file, kind) {
+    preview.innerHTML = '';
+    preview.hidden = false;
+    const url = URL.createObjectURL(file);
+
+    if (kind === 'image') {
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = 'Selected photo preview';
+      img.className = 'media-preview-image';
+      preview.appendChild(img);
+    } else {
+      const video = document.createElement('video');
+      video.src = url;
+      video.controls = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+      video.className = 'media-preview-video';
+      preview.appendChild(video);
+    }
+  }
+
+  imageInput?.addEventListener('change', function () {
+    if (this.files.length) {
+      if (videoInput) videoInput.value = '';
+      showPreview(this.files[0], 'image');
+    } else if (!videoInput?.files.length) clearPreview();
+  });
+
+  videoInput?.addEventListener('change', function () {
+    if (this.files.length) {
+      if (imageInput) imageInput.value = '';
+      showPreview(this.files[0], 'video');
+    } else if (!imageInput?.files.length) clearPreview();
+  });
+})();
+</script>
+{% endblock %}
