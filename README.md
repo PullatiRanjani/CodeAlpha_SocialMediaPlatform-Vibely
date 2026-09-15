@@ -1,18 +1,18 @@
-**Vibely – Social Media Platfor**
+# **Vibely – Social Media Platfor**
 
 Vibely is a full-stack social media web application developed as part of the CodeAlpha Full Stack Development Internship.
 It provides a simple and interactive platform where users can create profiles, connect with other users, share posts and stories, and interact through likes, comments, follows, and notifications.
 
-🚀 Features
+🚀 **Features**
 
-👤 User Authentication
+👤 **User Authentication**
 
 - User registration and login
 - Secure password authentication
 - Separate user sessions
 - Automatic profile creation
 
-👥 User Profiles
+👥 **User Profiles**
 
 - Profile picture and display name
 - Bio
@@ -21,13 +21,13 @@ It provides a simple and interactive platform where users can create profiles, c
 - Follow and unfollow users
 - View other users' profiles
 
-🔍 Search
+🔍 **Search**
 
 - Search for users by username or name
 - Case-insensitive and partial search
 - Open a user's profile directly from search results
 
-📝 Posts
+📝 **Posts**
 
 - Create posts with captions
 - Upload images or videos
@@ -36,7 +36,7 @@ It provides a simple and interactive platform where users can create profiles, c
 - Delete your own posts
 - Posts are stored in the database
 
-📖 Stories
+📖 **Stories**
 
 - Create image or video stories
 - Stories automatically expire after 24 hours
@@ -46,7 +46,7 @@ It provides a simple and interactive platform where users can create profiles, c
 - Story owners can view story insights
 - Story owners can delete their stories
 
-🔔 Notifications
+🔔 **Notifications**
 
 Users receive notifications for:
 
@@ -56,14 +56,14 @@ Users receive notifications for:
 - Story likes
 - Story replies
 
-📱 Responsive Design
+📱 **Responsive Design**
 
 - Desktop-friendly interface
 - Mobile-friendly layout
 - Responsive navigation
 - Clean and modern social-media-style UI
 
-🛠️ Technologies Used
+🛠️ **Technologies Used**
 
 - Python
 - Django
@@ -73,7 +73,7 @@ Users receive notifications for:
 - SQLite
 - Pillow
 
-📂 Project Structure
+📂 **Project Structure**
 
 Vibely/
 │
@@ -105,7 +105,7 @@ Vibely/
     ├── img/
     └── js/
 
-⚙️ Installation and Setup
+⚙️ **Installation and Setup**
 
 1. Clone the repository
 
@@ -140,7 +140,7 @@ Open the local server URL shown in the terminal, usually:
 
 http://127.0.0.1:8000/
 
-🔐 Security
+🔐 **Security**
 
 Sensitive files and local development files such as the following are excluded from the repository:
 
@@ -153,15 +153,15 @@ __pycache__/
 
 API keys, passwords, and other private credentials should never be committed to GitHub.
 
-🎯 Internship Project
+🎯 **Internship Project**
 
 Internship: CodeAlpha Full Stack Development Internship
 Project: Social Media Platform
-Application Name: Vibely
+Application Name: Vibely(An application where you share your vibe and connect with others.)
 
 Vibely was developed to demonstrate full-stack web development concepts including user authentication, database management, social interactions, media uploads, responsive UI design, and dynamic web functionality.
 
-👩‍💻 Developed By
-Ranjani Pullati
+👩‍💻 **Developed By**
+**Ranjani Pullati**
 
 ⭐ If you find this project interesting, feel free to explore the repository and its features.
