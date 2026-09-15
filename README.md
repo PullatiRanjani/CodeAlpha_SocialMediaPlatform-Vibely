@@ -162,6 +162,7 @@ API keys, passwords, and other private credentials should never be committed to 
 Vibely was developed to demonstrate full-stack web development concepts including user authentication, database management, social interactions, media uploads, responsive UI design, and dynamic web functionality.
 
 👩‍💻 **Developed By**
+
 **Ranjani Pullati**
 
 ⭐ If you find this project interesting, feel free to explore the repository and its features.
